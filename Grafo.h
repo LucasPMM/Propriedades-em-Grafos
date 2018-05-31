@@ -1,7 +1,8 @@
+/*
+Trabalho desenvolvido por Lucas Paulo Martins Mariz - Técnico em informática formado pelo Coltec/UFMG E Aluno de Ciência da Computação UFMG
+*/
 //Declaração de funções:
-
 typedef struct grafo Grafo;
-
 //#1)
 Grafo* cria_Grafo();
 //#2)
@@ -33,8 +34,16 @@ void relacao_Ordem_Parcial(Grafo* gr);
 //#15)
 void fecho_Reflexivo(Grafo* gr);
 //#16)
-void fecho_Simetrico(Grafo* gr);
+void fecho_Simetrico(Grafo* gr, Grafo* gr3, Grafo* gr4);
 //#17)
 void fecho_Transitivo(Grafo* gr);
 //#18)
 void inicializar();
+//#19)
+int verificaAssimetria(Grafo* gr);
+//#20)
+void copia_Transitivo(Grafo* gr,int fecho);
+//#21)
+void verifica_ligacoes_faltantes(Grafo* gr);
+//#22)
+void verificaFechoSimetrico(Grafo *gr3, Grafo *gr4);

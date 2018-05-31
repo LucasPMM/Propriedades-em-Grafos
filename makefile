@@ -1,2 +1,2 @@
 all:
-	gcc Grafo.c main.c
+	gcc Grafo.c rb.c
