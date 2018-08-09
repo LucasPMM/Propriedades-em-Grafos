@@ -5,12 +5,18 @@ Trabalho desenvolvido por Lucas Paulo Martins Mariz - Técnico em informática f
 typedef struct grafo Grafo;
 
 // #1)
-Grafo criaGrafo();
+Grafo cria_grafo(int *excessao_zero);
 // #2)
-Grafo preencheGrafo();
+Grafo preenche_grafo(int *excessao_zero);
 // #3)
-void insereAresta(Grafo gr, int orig, int dest);
+void insere_aresta(Grafo gr, int orig, int dest);
 // #4)
-void imprimeMatriz(Grafo gr);
+void imprime_matriz(Grafo gr);
 // #5)
 void inicializar();
+// #6)
+void propriedades(Grafo gr);
+// #7)
+void libera_matriz(int **m, int tam);
+// #8)
+int** aloca_matriz(int tam);
