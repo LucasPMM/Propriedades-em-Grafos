@@ -42,3 +42,5 @@ void fecho_reflexivo(Grafo *gr);
 void fecho_simetrico(Grafo *gr);
 // #19)
 void fecho_transitivo(Grafo *gr);
+// #20)
+void fecho_padrao(Grafo *gr);

@@ -31,8 +31,6 @@ Grafo* cria_grafo(int *excessao_zero) {
 
 	gr = preenche_grafo(&aux);
     *excessao_zero = aux;
-	if(!aux)
-        imprime_matriz(gr);
 	return gr;
 }
 
@@ -275,16 +273,17 @@ void assimetrica(Grafo *gr) {
 
 void transitiva(Grafo *gr) {
     int i, j, k, **matriz_adjacencia_auxiliar = aloca_matriz(gr->n_vertices);
+    Grafo *auxiliar = cria_grafo(&i);
 
     for(i=0;i<gr->n_vertices;i++) {
         for(j=0;j<gr->n_vertices;j++){
-            if(gr->matriz_adjacencia[i][j] == 1) { // Existe (x,y)
+            if(auxiliar->matriz_adjacencia[i][j] == 1) { // Existe (x,y)
                 for(k=0;k<gr->n_vertices;k++) {
-                    if(gr->matriz_adjacencia[j][k] == 1) { // Existe (y,z)
-                        if(gr->matriz_adjacencia[i][k] == 0) { // Não existe (x,z)
+                    if(auxiliar->matriz_adjacencia[j][k] == 1) { // Existe (y,z)
+                        if(auxiliar->matriz_adjacencia[i][k] == 0) { // Não existe (x,z)
                             gr->propriedade_transitiva = 0;
                             matriz_adjacencia_auxiliar[i][k] = 1;
-                            gr->matriz_adjacencia[i][k] = 1;
+                            auxiliar->matriz_adjacencia[i][k] = 1;
                             i=0;
                             j=0;
                         }
@@ -345,41 +344,53 @@ void fecho_padrao(Grafo *gr) { // Imprimir todas as relações já existentes ca
             }
         }
     }
-    printf("}\n");
 }
 
 void fecho_reflexivo(Grafo *gr) {
-    if(gr->propriedade_reflexiva == 1){
-        printf("Fecho reflexivo da relaçao = {");
-        fecho_padrao(gr);
-    }
-    else {
 
+    printf("Fecho reflexivo da relaçao = {");
+    fecho_padrao(gr);
+    if(gr->propriedade_reflexiva == 0) {
+        int i, **matriz_adjacencia_auxiliar = aloca_matriz(gr->n_vertices), controle_virgula = 0;
+        for(i=0;i<gr->n_vertices;i++)
+            if(gr->matriz_adjacencia[i][i] == 0) 
+                matriz_adjacencia_auxiliar[i][i] = 1;
+
+        for(i=0;i<gr->n_vertices;i++) {
+            if(controle_virgula == 1) {
+                printf(",");
+                controle_virgula = 0;
+            }
+            if(matriz_adjacencia_auxiliar[i][i] == 1){
+                controle_virgula = 1;
+                printf("(%d,%d)", gr->elementos[i], gr->elementos[i]);
+            }
+        }
     }
+    printf("}\n");
 }
 
 void fecho_simetrico(Grafo *gr) {
-    if(gr->propriedade_simetrica == 1){
-        printf("Fecho simetrico da relaçao = {");
-        fecho_padrao(gr);
-    }
-    else {
+    printf("Fecho simetrico da relaçao = {");
+    fecho_padrao(gr);
+    if(gr->propriedade_simetrica == 0) {
 
     }
+    printf("}\n");
 }
 
 void fecho_transitivo(Grafo *gr) {
-    if(gr->propriedade_transitiva == 1){
-        printf("Fecho transitivo da relaçao = {");
-        fecho_padrao(gr);
-    }
-    else {
+    printf("Fecho transitivo da relaçao = {");
+    fecho_padrao(gr);
+    if(gr->propriedade_transitiva == 0) {
 
     }
+    printf("}\n");
 }
 
 void propriedades(Grafo *gr) {
     printf("\n\nPropriedades:\n\n");
+    imprime_matriz(gr);
     reflexiva(gr); 
     irreflexiva(gr);
     simetrica(gr);
@@ -390,14 +401,16 @@ void propriedades(Grafo *gr) {
     equivalencia(gr);
     ordem_parcial(gr);   
     // Fechos:
+    printf("\n");
     fecho_reflexivo(gr);
-    fecho_simetrico(gr);
-    fecho_transitivo(gr);
+    //fecho_simetrico(gr);
+    //fecho_transitivo(gr);
+    printf("\n");
 }
 
 void inicializar() {
     int excessao_zero;  // Caso seja um grafo sem nenhum vértice
-	Grafo *gr = cria_grafo(&excessao_zero);
+    Grafo *gr = cria_grafo(&excessao_zero);
     propriedades(gr);
     libera_matriz(gr->matriz_adjacencia, gr->n_vertices);
     free(gr);
