@@ -182,10 +182,31 @@ void reflexiva(Grafo gr){
     }
 }
 
+void irreflexiva(Grafo gr){
+    int i, **matriz_adjacencia_auxiliar = aloca_matriz(gr.n_vertices);
+
+    for(i=0;i<gr.n_vertices;i++)
+        if(gr.matriz_adjacencia[i][i] == 1){
+            matriz_adjacencia_auxiliar[i][i] = 1;
+            gr.propriedade_irreflexiva = 0;
+        }
+
+    if(gr.propriedade_irreflexiva == 1)
+        printf("2. Irreflexiva: V\n");
+    else {
+        printf("2. Irreflexiva: F\n");
+        for(i=0;i<gr.n_vertices;i++){
+            if(matriz_adjacencia_auxiliar[i][i] == 1)
+                printf("(%d, %d); ", gr.elementos[i], gr.elementos[i]);
+        }
+        printf("\n");
+    }
+}
+
 void propriedades(Grafo gr) {
     printf("\n\nPropriedades:\n\n");
     reflexiva(gr); 
-
+    irreflexiva(gr);
 
 }
 
