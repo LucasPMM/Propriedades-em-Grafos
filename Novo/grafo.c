@@ -165,7 +165,7 @@ void reflexiva(Grafo gr) {
     int i, **matriz_adjacencia_auxiliar = aloca_matriz(gr.n_vertices);
 
     for(i=0;i<gr.n_vertices;i++)
-        if(gr.matriz_adjacencia[i][i] == 0){
+        if(gr.matriz_adjacencia[i][i] == 0) {
             matriz_adjacencia_auxiliar[i][i] = 1;
             gr.propriedade_reflexiva = 0;
         }
@@ -186,7 +186,7 @@ void irreflexiva(Grafo gr) {
     int i, **matriz_adjacencia_auxiliar = aloca_matriz(gr.n_vertices);
 
     for(i=0;i<gr.n_vertices;i++)
-        if(gr.matriz_adjacencia[i][i] == 1){
+        if(gr.matriz_adjacencia[i][i] == 1) {
             matriz_adjacencia_auxiliar[i][i] = 1;
             gr.propriedade_irreflexiva = 0;
         }
@@ -209,7 +209,7 @@ void simetrica(Grafo gr) {
     for(i=0;i<gr.n_vertices;i++) 
         for(j=0;j<gr.n_vertices;j++)
             if(gr.matriz_adjacencia[i][j] == 1)
-                if(gr.matriz_adjacencia[j][i] == 0){
+                if(gr.matriz_adjacencia[j][i] == 0) {
                     gr.propriedade_simetrica = 0;
                     matriz_adjacencia_auxiliar[i][j] = 1;
                 }
@@ -234,8 +234,7 @@ void anti_simetrica(Grafo gr) {
     for(i=0;i<gr.n_vertices;i++) 
         for(j=0;j<gr.n_vertices;j++)
             if(gr.matriz_adjacencia[i][j] == 1)
-                if(gr.matriz_adjacencia[j][i] == 1){
-                    printf("%d %d\n", i,j);
+                if(gr.matriz_adjacencia[j][i] == 1) {
                     if(i != j) {
                         gr.propriedade_anti_simetrica = 0;
                         matriz_adjacencia_auxiliar[i][j] = 1;
@@ -259,12 +258,28 @@ void anti_simetrica(Grafo gr) {
     }   
 }
 
+void assimetrica(Grafo gr) {
+    int i, j;
+    
+    for(i=0;i<gr.n_vertices;i++) 
+        for(j=0;j<gr.n_vertices;j++)
+            if(gr.matriz_adjacencia[i][j] == 1)
+                if(gr.matriz_adjacencia[j][i] == 1)
+                    gr.propriedade_assimetrica = 0;
+                
+    if(gr.propriedade_assimetrica == 1)
+        printf("5. Asimetrica: V\n");
+    else
+        printf("5. Asimetrica: F\n");   
+}
+
 void propriedades(Grafo gr) {
     printf("\n\nPropriedades:\n\n");
     reflexiva(gr); 
     irreflexiva(gr);
     simetrica(gr);
     anti_simetrica(gr);
+    assimetrica(gr);
 }
 
 void inicializar() {
