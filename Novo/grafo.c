@@ -347,7 +347,6 @@ void fecho_padrao(Grafo *gr) { // Imprimir todas as relações já existentes ca
 }
 
 void fecho_reflexivo(Grafo *gr) {
-
     printf("Fecho reflexivo da relaçao = {");
     fecho_padrao(gr);
     if(gr->propriedade_reflexiva == 0) {
@@ -403,7 +402,7 @@ void propriedades(Grafo *gr) {
     // Fechos:
     printf("\n");
     fecho_reflexivo(gr);
-    //fecho_simetrico(gr);
+    fecho_simetrico(gr);
     //fecho_transitivo(gr);
     printf("\n");
 }
