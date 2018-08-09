@@ -27,8 +27,8 @@ struct grafo {
 };
 
 
-Grafo cria_grafo(int *excessao_zero) {
-	Grafo gr;
+Grafo* cria_grafo(int *excessao_zero) {
+	Grafo *gr;
     int aux; 
 
 	gr = preenche_grafo(&aux);
@@ -45,43 +45,45 @@ void libera_matriz(int **m, int tam) {   //Função para liberar o espaço aloca
     free(m);
 }
 
-Grafo preenche_grafo(int *excessao_zero) {
+Grafo* preenche_grafo(int *excessao_zero) {
 //--------------------Lendo dados do arquivo-----------//
-	Grafo gr;
+	Grafo* gr;
+    gr = (Grafo*) malloc(sizeof(struct grafo));
+
 	int i;
     char url[] = "dados.txt", n_vertices[1];
     FILE *arq;
     arq = fopen(url, "r");
 
     for(i=0;i<50;i++) 
-    	gr.elementos[i] = -1;
+    	gr->elementos[i] = -1;
 
     if(arq == NULL)
         printf("Erro, nao foi possivel abrir o arquivo\n");
     else {
         n_vertices[0] = fgetc(arq);   //Pega o primeiro caractere do arquivo que representa o número de elementos
     	int n_vertices_inteiro = atoi(n_vertices);    //Transformação de char para inteiro
-	    gr.n_vertices = n_vertices_inteiro;
+	    gr->n_vertices = n_vertices_inteiro;
 
         // Inicialização das propriedades
-        gr.propriedade_reflexiva = 1;
-        gr.propriedade_irreflexiva = 1;
-        gr.propriedade_simetrica = 1;
-        gr.propriedade_anti_simetrica = 1;
-        gr.propriedade_assimetrica = 1;
-        gr.propriedade_transitiva = 1;
-        gr.relacao_equivalencia = 1;
-        gr.relacao_ordem_parcial = 1;
+        gr->propriedade_reflexiva = 1;
+        gr->propriedade_irreflexiva = 1;
+        gr->propriedade_simetrica = 1;
+        gr->propriedade_anti_simetrica = 1;
+        gr->propriedade_assimetrica = 1;
+        gr->propriedade_transitiva = 1;
+        gr->relacao_equivalencia = 1;
+        gr->relacao_ordem_parcial = 1;
 
-        if(gr.n_vertices == 0)    // Todas propriedades são verdadeiras
+        if(gr->n_vertices == 0)    // Todas propriedades são verdadeiras
             *excessao_zero = 1;
         else {
             *excessao_zero = 0;
     	    // Alocação da Matriz de adjacencias quadrada:
 
-    	    gr.matriz_adjacencia = (int**) calloc(gr.n_vertices, sizeof(int*));
-    	    for(i=0;i<gr.n_vertices;i++)
-    	    	gr.matriz_adjacencia[i] = (int*) calloc(gr.n_vertices, sizeof(int)); 
+    	    gr->matriz_adjacencia = (int**) calloc(gr->n_vertices, sizeof(int*));
+    	    for(i=0;i<gr->n_vertices;i++)
+    	    	gr->matriz_adjacencia[i] = (int*) calloc(gr->n_vertices, sizeof(int)); 
 
        		char info[50];
             int linha=0;
@@ -105,7 +107,7 @@ Grafo preenche_grafo(int *excessao_zero) {
                         char aux[1];
                         aux[0] = info[i];
                         nome = aux[0] - '0';
-                        gr.elementos[cont] = nome;
+                        gr->elementos[cont] = nome;
                         cont++;
                     }
                 }
@@ -117,35 +119,35 @@ Grafo preenche_grafo(int *excessao_zero) {
 	return gr;
 }
 
-void insere_aresta(Grafo gr, int orig, int dest) {    //Função para inserir um relacionamento 
+void insere_aresta(Grafo *gr, int orig, int dest) {    //Função para inserir um relacionamento 
     int i, nova_origem, novo_destino;
 /*
 Realização da tradução entre o nome colocado pelo usuário e a verdadeira posição que esse númemro ocupa no vetor,
 de forma que os calculos ocorram de forma transparente para o usuário.
 */
-    for(i=0;gr.elementos[i]!=-1;i++) {
-        if(gr.elementos[i] == orig)
+    for(i=0;gr->elementos[i]!=-1;i++) {
+        if(gr->elementos[i] == orig)
             nova_origem=i;
-        if(gr.elementos[i] == dest)
+        if(gr->elementos[i] == dest)
             novo_destino=i;
     }
 
-    gr.matriz_adjacencia[nova_origem][novo_destino] = 1;
-    gr.n_ligacoes++;           //O número total de relacionamentos do grafo aumenta.
+    gr->matriz_adjacencia[nova_origem][novo_destino] = 1;
+    gr->n_ligacoes++;   //O número total de relacionamentos do grafo aumenta.
 }
 
-void imprime_matriz(Grafo gr) {
+void imprime_matriz(Grafo *gr) {
 	int i, j;
 
 	printf("\n\t");
-	for(i=0;i<gr.n_vertices;i++)
-		printf("%d ", gr.elementos[i]);
+	for(i=0;i<gr->n_vertices;i++)
+		printf("%d ", gr->elementos[i]);
 
 	printf("\n\n\n");
-	for(i=0;i<gr.n_vertices;i++) {
-		printf("%d\t", gr.elementos[i]);
-		for(j=0;j<gr.n_vertices;j++) {
-			printf("%d ", gr.matriz_adjacencia[i][j]);
+	for(i=0;i<gr->n_vertices;i++) {
+		printf("%d\t", gr->elementos[i]);
+		for(j=0;j<gr->n_vertices;j++) {
+			printf("%d ", gr->matriz_adjacencia[i][j]);
 		}
 		printf("\n");
 	}
@@ -161,94 +163,94 @@ int** aloca_matriz(int tam) {
     return m;
 }
 
-void reflexiva(Grafo gr) {
-    int i, **matriz_adjacencia_auxiliar = aloca_matriz(gr.n_vertices);
+void reflexiva(Grafo *gr) {
+    int i, **matriz_adjacencia_auxiliar = aloca_matriz(gr->n_vertices);
 
-    for(i=0;i<gr.n_vertices;i++)
-        if(gr.matriz_adjacencia[i][i] == 0) {
+    for(i=0;i<gr->n_vertices;i++)
+        if(gr->matriz_adjacencia[i][i] == 0) {
             matriz_adjacencia_auxiliar[i][i] = 1;
-            gr.propriedade_reflexiva = 0;
+            gr->propriedade_reflexiva = 0;
         }
 
-    if(gr.propriedade_reflexiva == 1)
+    if(gr->propriedade_reflexiva == 1)
         printf("1. Reflexiva: V\n");
     else {
         printf("1. Reflexiva: F\n");
-        for(i=0;i<gr.n_vertices;i++) {
+        for(i=0;i<gr->n_vertices;i++) {
             if(matriz_adjacencia_auxiliar[i][i] == 1)
-                printf("(%d,%d); ", gr.elementos[i], gr.elementos[i]);
+                printf("(%d,%d); ", gr->elementos[i], gr->elementos[i]);
         }
         printf("\n");
     }
 }
 
-void irreflexiva(Grafo gr) {
-    int i, **matriz_adjacencia_auxiliar = aloca_matriz(gr.n_vertices);
+void irreflexiva(Grafo *gr) {
+    int i, **matriz_adjacencia_auxiliar = aloca_matriz(gr->n_vertices);
 
-    for(i=0;i<gr.n_vertices;i++)
-        if(gr.matriz_adjacencia[i][i] == 1) {
+    for(i=0;i<gr->n_vertices;i++)
+        if(gr->matriz_adjacencia[i][i] == 1) {
             matriz_adjacencia_auxiliar[i][i] = 1;
-            gr.propriedade_irreflexiva = 0;
+            gr->propriedade_irreflexiva = 0;
         }
 
-    if(gr.propriedade_irreflexiva == 1)
+    if(gr->propriedade_irreflexiva == 1)
         printf("2. Irreflexiva: V\n");
     else {
         printf("2. Irreflexiva: F\n");
-        for(i=0;i<gr.n_vertices;i++) {
+        for(i=0;i<gr->n_vertices;i++) {
             if(matriz_adjacencia_auxiliar[i][i] == 1)
-                printf("(%d,%d); ", gr.elementos[i], gr.elementos[i]);
+                printf("(%d,%d); ", gr->elementos[i], gr->elementos[i]);
         }
         printf("\n");
     }
 }
 
-void simetrica(Grafo gr) {
-    int i, j, **matriz_adjacencia_auxiliar = aloca_matriz(gr.n_vertices);
+void simetrica(Grafo *gr) {
+    int i, j, **matriz_adjacencia_auxiliar = aloca_matriz(gr->n_vertices);
     
-    for(i=0;i<gr.n_vertices;i++) 
-        for(j=0;j<gr.n_vertices;j++)
-            if(gr.matriz_adjacencia[i][j] == 1)
-                if(gr.matriz_adjacencia[j][i] == 0) {
-                    gr.propriedade_simetrica = 0;
+    for(i=0;i<gr->n_vertices;i++) 
+        for(j=0;j<gr->n_vertices;j++)
+            if(gr->matriz_adjacencia[i][j] == 1)
+                if(gr->matriz_adjacencia[j][i] == 0) {
+                    gr->propriedade_simetrica = 0;
                     matriz_adjacencia_auxiliar[i][j] = 1;
                 }
 
-    if(gr.propriedade_simetrica == 1)
+    if(gr->propriedade_simetrica == 1)
         printf("3. Simetrica: V\n");
     else {
         printf("3. Simetrica: F\n");
-        for(i=0;i<gr.n_vertices;i++) {
-            for(j=0;j<gr.n_vertices;j++) {
+        for(i=0;i<gr->n_vertices;i++) {
+            for(j=0;j<gr->n_vertices;j++) {
                 if(matriz_adjacencia_auxiliar[i][j] == 1)
-                    printf("(%d,%d) e (%d,%d); ", gr.elementos[i], gr.elementos[j], gr.elementos[j], gr.elementos[i]);
+                    printf("(%d,%d) e (%d,%d); ", gr->elementos[i], gr->elementos[j], gr->elementos[j], gr->elementos[i]);
             }
         }
         printf("\n");
     }
 }
 
-void anti_simetrica(Grafo gr) {
-    int i, j, **matriz_adjacencia_auxiliar = aloca_matriz(gr.n_vertices);
+void anti_simetrica(Grafo *gr) {
+    int i, j, **matriz_adjacencia_auxiliar = aloca_matriz(gr->n_vertices);
     
-    for(i=0;i<gr.n_vertices;i++) 
-        for(j=0;j<gr.n_vertices;j++)
-            if(gr.matriz_adjacencia[i][j] == 1)
-                if(gr.matriz_adjacencia[j][i] == 1) {
+    for(i=0;i<gr->n_vertices;i++) 
+        for(j=0;j<gr->n_vertices;j++)
+            if(gr->matriz_adjacencia[i][j] == 1)
+                if(gr->matriz_adjacencia[j][i] == 1) {
                     if(i != j) {
-                        gr.propriedade_anti_simetrica = 0;
+                        gr->propriedade_anti_simetrica = 0;
                         matriz_adjacencia_auxiliar[i][j] = 1;
                     }
                 }
 
-    if(gr.propriedade_anti_simetrica == 1)
+    if(gr->propriedade_anti_simetrica == 1)
         printf("4. Anti-simetrica: V\n");
     else {
         printf("4. Anti-simetrica: F\n");
-        for(i=0;i<gr.n_vertices;i++) {
-            for(j=0;j<gr.n_vertices;j++) {
+        for(i=0;i<gr->n_vertices;i++) {
+            for(j=0;j<gr->n_vertices;j++) {
                 if(matriz_adjacencia_auxiliar[i][j] == 1){
-                    printf("(%d,%d) e (%d,%d); ", gr.elementos[i], gr.elementos[j], gr.elementos[j], gr.elementos[i]);
+                    printf("(%d,%d) e (%d,%d); ", gr->elementos[i], gr->elementos[j], gr->elementos[j], gr->elementos[i]);
                     matriz_adjacencia_auxiliar[i][j] = 0;
                     matriz_adjacencia_auxiliar[j][i] = 0;
                 }
@@ -258,33 +260,33 @@ void anti_simetrica(Grafo gr) {
     }   
 }
 
-void assimetrica(Grafo gr) {
+void assimetrica(Grafo *gr) {
     int i, j;
     
-    for(i=0;i<gr.n_vertices;i++) 
-        for(j=0;j<gr.n_vertices;j++)
-            if(gr.matriz_adjacencia[i][j] == 1)
-                if(gr.matriz_adjacencia[j][i] == 1)
-                    gr.propriedade_assimetrica = 0;
+    for(i=0;i<gr->n_vertices;i++) 
+        for(j=0;j<gr->n_vertices;j++)
+            if(gr->matriz_adjacencia[i][j] == 1)
+                if(gr->matriz_adjacencia[j][i] == 1)
+                    gr->propriedade_assimetrica = 0;
                 
-    if(gr.propriedade_assimetrica == 1)
+    if(gr->propriedade_assimetrica == 1)
         printf("5. Asimetrica: V\n");
     else
         printf("5. Asimetrica: F\n");   
 }
 
-void transitiva(Grafo gr) {
-    int i, j, k, **matriz_adjacencia_auxiliar = aloca_matriz(gr.n_vertices);
+void transitiva(Grafo *gr) {
+    int i, j, k, **matriz_adjacencia_auxiliar = aloca_matriz(gr->n_vertices);
 
-    for(i=0;i<gr.n_vertices;i++) {
-        for(j=0;j<gr.n_vertices;j++){
-            if(gr.matriz_adjacencia[i][j] == 1) { // Existe (x,y)
-                for(k=0;k<gr.n_vertices;k++) {
-                    if(gr.matriz_adjacencia[j][k] == 1) { // Existe (y,z)
-                        if(gr.matriz_adjacencia[i][k] == 0) { // Não existe (x,z)
-                            gr.propriedade_transitiva = 0;
+    for(i=0;i<gr->n_vertices;i++) {
+        for(j=0;j<gr->n_vertices;j++){
+            if(gr->matriz_adjacencia[i][j] == 1) { // Existe (x,y)
+                for(k=0;k<gr->n_vertices;k++) {
+                    if(gr->matriz_adjacencia[j][k] == 1) { // Existe (y,z)
+                        if(gr->matriz_adjacencia[i][k] == 0) { // Não existe (x,z)
+                            gr->propriedade_transitiva = 0;
                             matriz_adjacencia_auxiliar[i][k] = 1;
-                            gr.matriz_adjacencia[i][k] = 1;
+                            gr->matriz_adjacencia[i][k] = 1;
                             i=0;
                             j=0;
                         }
@@ -294,21 +296,43 @@ void transitiva(Grafo gr) {
         }
     }
 
-    if(gr.propriedade_transitiva == 1) 
+    if(gr->propriedade_transitiva == 1) 
         printf("6. Transitiva: V\n");
     else {
         printf("6. Transitiva: F\n");
-        for(i=0;i<gr.n_vertices;i++) {
-            for(j=0;j<gr.n_vertices;j++) {
+        for(i=0;i<gr->n_vertices;i++) {
+            for(j=0;j<gr->n_vertices;j++) {
                 if(matriz_adjacencia_auxiliar[i][j] == 1)
-                    printf("(%d,%d); ", gr.elementos[i], gr.elementos[j]);
+                    printf("(%d,%d); ", gr->elementos[i], gr->elementos[j]);
             }
         }
         printf("\n");
     }
 }
 
-void propriedades(Grafo gr) {
+void equivalencia(Grafo *gr) {
+    if(gr->propriedade_reflexiva == 1 && gr->propriedade_simetrica == 1 && gr->propriedade_transitiva == 1) {
+        gr->relacao_equivalencia = 1;
+        printf("Relaçao de equivalencia: V\n");
+    }
+    else {
+        gr->relacao_equivalencia = 0;
+        printf("Relaçao de equivalencia: F\n");        
+    }
+}
+
+void ordem_parcial(Grafo *gr) {
+    if(gr->propriedade_reflexiva == 1 && gr->propriedade_anti_simetrica == 1 && gr->propriedade_transitiva == 1) {
+        gr->relacao_ordem_parcial = 1;
+        printf("Relaçao de ordem parcial: V\n");
+    }
+    else {
+        gr->relacao_ordem_parcial = 0;
+        printf("Relaçao de ordem parcial: F\n");        
+    }
+}
+
+void propriedades(Grafo *gr) {
     printf("\n\nPropriedades:\n\n");
     reflexiva(gr); 
     irreflexiva(gr);
@@ -316,13 +340,16 @@ void propriedades(Grafo gr) {
     anti_simetrica(gr);
     assimetrica(gr);
     transitiva(gr);
+    printf("\n");
+    equivalencia(gr);
+    ordem_parcial(gr);   
 
-    
 }
 
 void inicializar() {
     int excessao_zero;  // Caso seja um grafo sem nenhum vértice
-	Grafo gr = cria_grafo(&excessao_zero);
+	Grafo *gr = cria_grafo(&excessao_zero);
     propriedades(gr);
-    libera_matriz(gr.matriz_adjacencia, gr.n_vertices);
+    libera_matriz(gr->matriz_adjacencia, gr->n_vertices);
+    free(gr);
 }
