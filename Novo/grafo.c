@@ -228,11 +228,43 @@ void simetrica(Grafo gr) {
     }
 }
 
+void anti_simetrica(Grafo gr) {
+    int i, j, **matriz_adjacencia_auxiliar = aloca_matriz(gr.n_vertices);
+    
+    for(i=0;i<gr.n_vertices;i++) 
+        for(j=0;j<gr.n_vertices;j++)
+            if(gr.matriz_adjacencia[i][j] == 1)
+                if(gr.matriz_adjacencia[j][i] == 1){
+                    printf("%d %d\n", i,j);
+                    if(i != j) {
+                        gr.propriedade_anti_simetrica = 0;
+                        matriz_adjacencia_auxiliar[i][j] = 1;
+                    }
+                }
+
+    if(gr.propriedade_anti_simetrica == 1)
+        printf("4. Anti-simetrica: V\n");
+    else {
+        printf("4. Anti-simetrica: F\n");
+        for(i=0;i<gr.n_vertices;i++) {
+            for(j=0;j<gr.n_vertices;j++) {
+                if(matriz_adjacencia_auxiliar[i][j] == 1){
+                    printf("(%d,%d) e (%d,%d); ", gr.elementos[i], gr.elementos[j], gr.elementos[j], gr.elementos[i]);
+                    matriz_adjacencia_auxiliar[i][j] = 0;
+                    matriz_adjacencia_auxiliar[j][i] = 0;
+                }
+            }
+        }
+        printf("\n");
+    }   
+}
+
 void propriedades(Grafo gr) {
     printf("\n\nPropriedades:\n\n");
     reflexiva(gr); 
     irreflexiva(gr);
     simetrica(gr);
+    anti_simetrica(gr);
 }
 
 void inicializar() {

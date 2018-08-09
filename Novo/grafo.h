@@ -26,3 +26,5 @@ void reflexiva(Grafo gr);
 void irreflexiva(Grafo gr);
 // #11)
 void simetrica(Grafo gr);
+// #12)
+void anti_simetrica(Grafo gr);
