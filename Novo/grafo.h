@@ -20,3 +20,9 @@ void propriedades(Grafo gr);
 void libera_matriz(int **m, int tam);
 // #8)
 int** aloca_matriz(int tam);
+// #9)
+void reflexiva(Grafo gr);
+// #10)
+void irreflexiva(Grafo gr);
+// #11)
+void simetrica(Grafo gr);

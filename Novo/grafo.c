@@ -38,7 +38,7 @@ Grafo cria_grafo(int *excessao_zero) {
 	return gr;
 }
 
-void libera_matriz(int **m, int tam){   //Função para liberar o espaço alocado na memória
+void libera_matriz(int **m, int tam) {   //Função para liberar o espaço alocado na memória
     int i;
     for(i=0;i<tam;i++)
         free(m[i]);
@@ -75,7 +75,7 @@ Grafo preenche_grafo(int *excessao_zero) {
 
         if(gr.n_vertices == 0)    // Todas propriedades são verdadeiras
             *excessao_zero = 1;
-        else{
+        else {
             *excessao_zero = 0;
     	    // Alocação da Matriz de adjacencias quadrada:
 
@@ -161,7 +161,7 @@ int** aloca_matriz(int tam) {
     return m;
 }
 
-void reflexiva(Grafo gr){
+void reflexiva(Grafo gr) {
     int i, **matriz_adjacencia_auxiliar = aloca_matriz(gr.n_vertices);
 
     for(i=0;i<gr.n_vertices;i++)
@@ -174,15 +174,15 @@ void reflexiva(Grafo gr){
         printf("1. Reflexiva: V\n");
     else {
         printf("1. Reflexiva: F\n");
-        for(i=0;i<gr.n_vertices;i++){
+        for(i=0;i<gr.n_vertices;i++) {
             if(matriz_adjacencia_auxiliar[i][i] == 1)
-                printf("(%d, %d); ", gr.elementos[i], gr.elementos[i]);
+                printf("(%d,%d); ", gr.elementos[i], gr.elementos[i]);
         }
         printf("\n");
     }
 }
 
-void irreflexiva(Grafo gr){
+void irreflexiva(Grafo gr) {
     int i, **matriz_adjacencia_auxiliar = aloca_matriz(gr.n_vertices);
 
     for(i=0;i<gr.n_vertices;i++)
@@ -195,9 +195,34 @@ void irreflexiva(Grafo gr){
         printf("2. Irreflexiva: V\n");
     else {
         printf("2. Irreflexiva: F\n");
-        for(i=0;i<gr.n_vertices;i++){
+        for(i=0;i<gr.n_vertices;i++) {
             if(matriz_adjacencia_auxiliar[i][i] == 1)
-                printf("(%d, %d); ", gr.elementos[i], gr.elementos[i]);
+                printf("(%d,%d); ", gr.elementos[i], gr.elementos[i]);
+        }
+        printf("\n");
+    }
+}
+
+void simetrica(Grafo gr) {
+    int i, j, **matriz_adjacencia_auxiliar = aloca_matriz(gr.n_vertices);
+    
+    for(i=0;i<gr.n_vertices;i++) 
+        for(j=0;j<gr.n_vertices;j++)
+            if(gr.matriz_adjacencia[i][j] == 1)
+                if(gr.matriz_adjacencia[j][i] == 0){
+                    gr.propriedade_simetrica = 0;
+                    matriz_adjacencia_auxiliar[i][j] = 1;
+                }
+
+    if(gr.propriedade_simetrica == 1)
+        printf("3. Simetrica: V\n");
+    else {
+        printf("3. Simetrica: F\n");
+        for(i=0;i<gr.n_vertices;i++) {
+            for(j=0;j<gr.n_vertices;j++) {
+                if(matriz_adjacencia_auxiliar[i][j] == 1)
+                    printf("(%d,%d) e (%d,%d); ", gr.elementos[i], gr.elementos[j], gr.elementos[j], gr.elementos[i]);
+            }
         }
         printf("\n");
     }
@@ -207,7 +232,7 @@ void propriedades(Grafo gr) {
     printf("\n\nPropriedades:\n\n");
     reflexiva(gr); 
     irreflexiva(gr);
-
+    simetrica(gr);
 }
 
 void inicializar() {
