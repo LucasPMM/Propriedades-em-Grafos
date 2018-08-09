@@ -4,8 +4,9 @@ Trabalho desenvolvido por Lucas Paulo Martins Mariz - Técnico em informática f
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "Grafo.h"
-int main(){
+#include "grafo.h"
+
+int main() {
     inicializar();
     return 0;
 }
