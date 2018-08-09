@@ -22,8 +22,6 @@ struct grafo {
 
     int relacao_equivalencia;
     int relacao_ordem_parcial;
-
-    // Fechos das relações:
 };
 
 
@@ -332,6 +330,54 @@ void ordem_parcial(Grafo *gr) {
     }
 }
 
+void fecho_padrao(Grafo *gr) { // Imprimir todas as relações já existentes caso seja reflexiva, simétrica e/ou transitiva
+    int i, j, controle_virgula = 0;
+
+    for(i=0;i<gr->n_vertices;i++) {
+        for(j=0;j<gr->n_vertices;j++) {
+            if(controle_virgula == 1) {
+                printf(",");
+                controle_virgula = 0;
+            }
+            if(gr->matriz_adjacencia[i][j] == 1) {
+                printf("(%d,%d)", gr->elementos[i], gr->elementos[j]);
+                controle_virgula = 1;
+            }
+        }
+    }
+    printf("}\n");
+}
+
+void fecho_reflexivo(Grafo *gr) {
+    if(gr->propriedade_reflexiva == 1){
+        printf("Fecho reflexivo da relaçao = {");
+        fecho_padrao(gr);
+    }
+    else {
+
+    }
+}
+
+void fecho_simetrico(Grafo *gr) {
+    if(gr->propriedade_simetrica == 1){
+        printf("Fecho simetrico da relaçao = {");
+        fecho_padrao(gr);
+    }
+    else {
+
+    }
+}
+
+void fecho_transitivo(Grafo *gr) {
+    if(gr->propriedade_transitiva == 1){
+        printf("Fecho transitivo da relaçao = {");
+        fecho_padrao(gr);
+    }
+    else {
+
+    }
+}
+
 void propriedades(Grafo *gr) {
     printf("\n\nPropriedades:\n\n");
     reflexiva(gr); 
@@ -343,7 +389,10 @@ void propriedades(Grafo *gr) {
     printf("\n");
     equivalencia(gr);
     ordem_parcial(gr);   
-
+    // Fechos:
+    fecho_reflexivo(gr);
+    fecho_simetrico(gr);
+    fecho_transitivo(gr);
 }
 
 void inicializar() {

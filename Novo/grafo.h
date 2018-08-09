@@ -36,3 +36,9 @@ void transitiva(Grafo *gr);
 void equivalencia(Grafo *gr);
 // #16)
 void ordem_parcial(Grafo *gr);
+// #17)
+void fecho_reflexivo(Grafo *gr);
+// #18)
+void fecho_simetrico(Grafo *gr);
+// #19)
+void fecho_transitivo(Grafo *gr);
