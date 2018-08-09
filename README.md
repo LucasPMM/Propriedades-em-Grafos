@@ -33,3 +33,5 @@ Para modificar as informações do programa basta alterar o arquivo "dados.txt".
 		- makefile	: arquivo make para compilar o rb.c e o Grafo.c;
 		- dados.txt : arquivo com a entrada do trabalho (numero de elementos, elementos, relações);
 		- rb.pdf	: documentação do trabalho. 
+
+		[Iniciando a Remodelação do projeto]
