@@ -30,3 +30,5 @@ void simetrica(Grafo gr);
 void anti_simetrica(Grafo gr);
 // #13)
 void assimetrica(Grafo gr);
+// #14)
+void transitiva(Grafo gr);

@@ -273,6 +273,41 @@ void assimetrica(Grafo gr) {
         printf("5. Asimetrica: F\n");   
 }
 
+void transitiva(Grafo gr) {
+    int i, j, k, **matriz_adjacencia_auxiliar = aloca_matriz(gr.n_vertices);
+
+    for(i=0;i<gr.n_vertices;i++) {
+        for(j=0;j<gr.n_vertices;j++){
+            if(gr.matriz_adjacencia[i][j] == 1) { // Existe (x,y)
+                for(k=0;k<gr.n_vertices;k++) {
+                    if(gr.matriz_adjacencia[j][k] == 1) { // Existe (y,z)
+                        if(gr.matriz_adjacencia[i][k] == 0) { // Não existe (x,z)
+                            gr.propriedade_transitiva = 0;
+                            matriz_adjacencia_auxiliar[i][k] = 1;
+                            gr.matriz_adjacencia[i][k] = 1;
+                            i=0;
+                            j=0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    if(gr.propriedade_transitiva == 1) 
+        printf("6. Transitiva: V\n");
+    else {
+        printf("6. Transitiva: F\n");
+        for(i=0;i<gr.n_vertices;i++) {
+            for(j=0;j<gr.n_vertices;j++) {
+                if(matriz_adjacencia_auxiliar[i][j] == 1)
+                    printf("(%d,%d); ", gr.elementos[i], gr.elementos[j]);
+            }
+        }
+        printf("\n");
+    }
+}
+
 void propriedades(Grafo gr) {
     printf("\n\nPropriedades:\n\n");
     reflexiva(gr); 
@@ -280,10 +315,13 @@ void propriedades(Grafo gr) {
     simetrica(gr);
     anti_simetrica(gr);
     assimetrica(gr);
+    transitiva(gr);
+
+    
 }
 
 void inicializar() {
-    int excessao_zero;
+    int excessao_zero;  // Caso seja um grafo sem nenhum vértice
 	Grafo gr = cria_grafo(&excessao_zero);
     propriedades(gr);
     libera_matriz(gr.matriz_adjacencia, gr.n_vertices);
