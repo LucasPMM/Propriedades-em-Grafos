@@ -27,13 +27,14 @@ Para modificar as informações do programa basta alterar o arquivo "dados.txt".
 
 
 
-----> Arquivos presentes:
-		- main.c 	: main do trabalho;
-		- grafo.c 	: biblioteca com todas as funções para determinar as propriedades dos grafos;
-		- grafo.h	: linkagem das bibliotecas;
-		- makefile	: arquivo make para compilar o rb.c e o Grafo.c;
-		- dados.txt 	: arquivo com a entrada do trabalho (numero de elementos, elementos, relações);
-		- rb.pdf	: documentação do trabalho. 
+| Arquivo       | Função        								| 
+| ------------- |:-----------------------------------------------------------------------------:|
+| main.c        | main do trabalho                                                              |
+| grafo.c       | biblioteca com todas as funções para determinar as propriedades dos grafos    |
+| grafo.h       | linkagem das bibliotecas                                                      |
+| makefile      | arquivo make para compilar o main.c e o grafo.c                               |
+| dados.txt     | arquivo com a entrada do trabalho (numero de elementos, elementos, relações) 	|
+| rb.pfd        | documentação do trabalho						        |
 
 # Documentação: 
 ### Descrição Geral:
