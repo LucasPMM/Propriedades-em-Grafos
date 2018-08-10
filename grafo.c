@@ -8,9 +8,9 @@ Trabalho desenvolvido por Lucas Paulo Martins Mariz - Técnico em informática f
 
 struct grafo {
 	int **matriz_adjacencia;	// Matriz de adjacencias que representa o grafo
-	int n_vertices;				// Número total de vertices que o grafo terá
+	int n_vertices;			// Número total de vertices que o grafo terá
 	int elementos[50];      	// Nomes dos vértices fornecidos pelo usuário
-	int n_ligacoes;				// //Número total de ligações que o grafo fará
+	int n_ligacoes;			// Número total de ligações que o grafo fará
 
     // Propriedades: 1 -> V | 0 -> F
     int propriedade_reflexiva;
@@ -26,12 +26,12 @@ struct grafo {
 
 
 Grafo* cria_grafo(int *excessao_zero) {
-	Grafo *gr;
+    Grafo *gr;
     int aux; 
 
-	gr = preenche_grafo(&aux);
+    gr = preenche_grafo(&aux);
     *excessao_zero = aux;
-	return gr;
+    return gr;
 }
 
 void libera_matriz(int **m, int tam) {   //Função para liberar o espaço alocado na memória
@@ -43,10 +43,10 @@ void libera_matriz(int **m, int tam) {   //Função para liberar o espaço aloca
 
 Grafo* preenche_grafo(int *excessao_zero) {
 //--------------------Lendo dados do arquivo-----------//
-	Grafo* gr;
+    Grafo* gr;
     gr = (Grafo*) malloc(sizeof(struct grafo));
 
-	int i;
+    int i;
     char url[] = "dados.txt", n_vertices[1];
     FILE *arq;
     arq = fopen(url, "r");
@@ -59,7 +59,7 @@ Grafo* preenche_grafo(int *excessao_zero) {
     else {
         n_vertices[0] = fgetc(arq);   //Pega o primeiro caractere do arquivo que representa o número de elementos
     	int n_vertices_inteiro = atoi(n_vertices);    //Transformação de char para inteiro
-	    gr->n_vertices = n_vertices_inteiro;
+	gr->n_vertices = n_vertices_inteiro;
 
         // Inicialização das propriedades
         gr->propriedade_reflexiva = 1;
@@ -81,7 +81,7 @@ Grafo* preenche_grafo(int *excessao_zero) {
     	    for(i=0;i<gr->n_vertices;i++)
     	    	gr->matriz_adjacencia[i] = (int*) calloc(gr->n_vertices, sizeof(int)); 
 
-       		char info[50];
+       	    char info[50];
             int linha=0;
             while(fgets(info, sizeof(info), arq)!=NULL) {
                 if(linha) { //Se não estiver na primeira linha do arquivo temos as ligações
