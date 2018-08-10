@@ -359,10 +359,9 @@ void fecho_reflexivo(Grafo *gr) {
 
         for(i=0;i<gr->n_vertices;i++) {
             if(matriz_adjacencia_auxiliar[i][i] == 1) {
-                if(controle_virgula == 1) {
+                if(controle_virgula)
                     printf(",");
-                    controle_virgula = 0;
-                }
+                controle_virgula = 0;
                 controle_virgula = 1;
                 printf("(%d,%d)", gr->elementos[i], gr->elementos[i]);
             }
@@ -387,10 +386,9 @@ void fecho_simetrico(Grafo *gr) {
         for(i=0;i<gr->n_vertices;i++) {
             for(j=0;j<gr->n_vertices;j++) {
                 if(matriz_adjacencia_auxiliar[i][j] == 1) {
-                    if(controle_virgula == 1) {
+                    if(controle_virgula == 1)
                         printf(",");
-                        controle_virgula = 0;
-                    }
+                    controle_virgula = 0;
                     printf("(%d,%d)", gr->elementos[j], gr->elementos[i]);
                     controle_virgula = 1;
                 }
@@ -428,10 +426,9 @@ void fecho_transitivo(Grafo *gr) {
         for(i=0;i<gr->n_vertices;i++) {
             for(j=0;j<gr->n_vertices;j++) {
                 if(matriz_adjacencia_auxiliar[i][j] == 1){
-                    if(controle_virgula == 1) {
+                    if(controle_virgula == 1)
                         printf(",");
-                        controle_virgula = 0;
-                    }
+                    controle_virgula = 0;
                     printf("(%d,%d)", gr->elementos[i], gr->elementos[j]);
                 }
             }
