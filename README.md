@@ -21,11 +21,14 @@ A biblioteca será automaticamente compilada e o programa irá gerar um arquivo 
 A execução do projeto é independente e não necessita da interferência do usuário pois todos os dados são resgatados do arquivo "dados.txt".
 
 Para modificar as informações do programa basta alterar o arquivo "dados.txt". Ele está formatado da seguinte forma:
-	- 1° Linha: 1° dígito-> número de elementos do grafo
-				Dígitos seguintes-> nome de cada elemento
-	- Linhas seguintes-> relacionamentos entre os elementos do grafo.
 
+|  Linha           | Digito            | Propriedade                                 |
+| ---------------- |:----------------  |:-------------------------------------------:|
+| 1°               | 1° Digito         | número de elementos do grafo                |
+| 1°               | Digitos Seguintes | nome de cada elemento                       |
+|Linhas Seguintes  | Digitos Seguintes | relacionamentos entre os elementos do grafo |
 
+- Arquivos:
 
 | Arquivo       | Função        								| 
 | ------------- |:-----------------------------------------------------------------------------:|
@@ -61,3 +64,27 @@ struct grafo {
     int relacao_ordem_parcial;
 };
 ```
+A Biblioteca é constituída pelas seguintes funções:
+```c
+	Grafo* cria_grafo(int *excessao_zero);			// Alocação dinâmica da matriz de adjacências
+	Grafo* preenche_grafo(int *excessao_zero);		// Preenchimento da matriz com os dados do arquivo
+	void insere_aresta(Grafo *gr, int orig, int dest);	// Tratamento da informação para a inserção
+	void imprime_matriz(Grafo *gr);				// Impressão da matriz de adjacências
+	void inicializar();					// Função chamada pelo main.c; inicia toda a execução
+	void propriedades(Grafo *gr);				// Central de definição das propriedades do grafo
+	void libera_matriz(int **m, int tam);			// Liberação do espaço alocado
+	int** aloca_matriz(int tam);				// Aloca matriz inteira quadrada
+	void reflexiva(Grafo *gr);				// Determina se a relação e reflexiva ou não
+	void irreflexiva(Grafo *gr);				// Determina se a relação é irreflexiva ou não
+	void simetrica(Grafo *gr);				// Determina se a relação é simétrica ou não
+	void anti_simetrica(Grafo *gr);				// Determina se a relação é anti-simétrica ou não
+	void assimetrica(Grafo *gr);				// Determina se a relação é assimétrica ou não
+	void transitiva(Grafo *gr);				// Determina se a relação é transitiva ou não
+	void equivalencia(Grafo *gr);				// Determina se a relação é de equivalência
+	void ordem_parcial(Grafo *gr);				// Determina se a relação é de ordem parcial
+	void fecho_reflexivo(Grafo *gr);			// Determina o fecho reflexivo da relação
+	void fecho_simetrico(Grafo *gr);			// Determina o fecho simétrico da relação
+	void fecho_transitivo(Grafo *gr);			// Determina o fecho transitivo da relação
+	void fecho_padrao(Grafo *gr);				// Determina o fecho padrão da relação
+```
+A variavel "excessao_zero" entra em ação quando inserimos um grafo com zero vértices, fazendo todas as propriedades serem verdadeiras por default.
