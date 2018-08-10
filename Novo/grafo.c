@@ -245,7 +245,7 @@ void anti_simetrica(Grafo *gr) {
         printf("4. Anti-simetrica: F\n");
         for(i=0;i<gr->n_vertices;i++) {
             for(j=0;j<gr->n_vertices;j++) {
-                if(matriz_adjacencia_auxiliar[i][j] == 1){
+                if(matriz_adjacencia_auxiliar[i][j] == 1) {
                     printf("(%d,%d) e (%d,%d); ", gr->elementos[i], gr->elementos[j], gr->elementos[j], gr->elementos[i]);
                     matriz_adjacencia_auxiliar[i][j] = 0;
                     matriz_adjacencia_auxiliar[j][i] = 0;
@@ -276,7 +276,7 @@ void transitiva(Grafo *gr) {
     Grafo *auxiliar = cria_grafo(&i);
 
     for(i=0;i<gr->n_vertices;i++) {
-        for(j=0;j<gr->n_vertices;j++){
+        for(j=0;j<gr->n_vertices;j++) {
             if(auxiliar->matriz_adjacencia[i][j] == 1) { // Existe (x,y)
                 for(k=0;k<gr->n_vertices;k++) {
                     if(auxiliar->matriz_adjacencia[j][k] == 1) { // Existe (y,z)
@@ -360,7 +360,7 @@ void fecho_reflexivo(Grafo *gr) {
                 printf(",");
                 controle_virgula = 0;
             }
-            if(matriz_adjacencia_auxiliar[i][i] == 1){
+            if(matriz_adjacencia_auxiliar[i][i] == 1) {
                 controle_virgula = 1;
                 printf("(%d,%d)", gr->elementos[i], gr->elementos[i]);
             }
@@ -373,7 +373,27 @@ void fecho_simetrico(Grafo *gr) {
     printf("Fecho simetrico da relaçao = {");
     fecho_padrao(gr);
     if(gr->propriedade_simetrica == 0) {
+        int i, j, **matriz_adjacencia_auxiliar = aloca_matriz(gr->n_vertices), controle_virgula = 1;
+        for(i=0;i<gr->n_vertices;i++) 
+            for(j=0;j<gr->n_vertices;j++)
+                if(gr->matriz_adjacencia[i][j] == 1)
+                    if(gr->matriz_adjacencia[j][i] == 0) {
+                        gr->propriedade_simetrica = 0;
+                        matriz_adjacencia_auxiliar[i][j] = 1;
+                    }
 
+        for(i=0;i<gr->n_vertices;i++) {
+            for(j=0;j<gr->n_vertices;j++) {
+                if(matriz_adjacencia_auxiliar[i][j] == 1) {
+                    if(controle_virgula == 1) {
+                        printf(",");
+                        controle_virgula = 0;
+                    }
+                    printf("(%d,%d)", gr->elementos[j], gr->elementos[i]);
+                    controle_virgula = 1;
+                }
+            }
+        }
     }
     printf("}\n");
 }
